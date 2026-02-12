@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Nos hacemos incendio - CDMX">
+  <main class="min-h-screen bg-black text-white">
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-4" transition:animate="fade">
+      <div class="max-w-4xl mx-auto text-center space-y-6 scroll-reveal">
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+          Nos hacemos incendio
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-400 font-light tracking-wide">
+          CDMX
+        </p>
+      </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-3xl mx-auto space-y-8 scroll-reveal">
+        <p class="text-xl md:text-2xl text-gray-300 leading-relaxed text-center font-light">
+          En el corazón de la ciudad que nunca duerme, donde las historias se entrelazan 
+          con el humo de la memoria y la pasión arde en cada esquina...
+        </p>
+        <p class="text-lg md:text-xl text-gray-400 leading-relaxed text-center font-light">
+          Te invitamos a vivir una experiencia única, diseñada para aquellos que buscan 
+          más que momentos ordinarios. Cada detalle ha sido pensado para encender 
+          algo especial dentro de ti.
+        </p>
+      </div>
+    </section>
+
+    <!-- Experiences Grid -->
+    <section class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 scroll-reveal">
+          Experiencias que encienden
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Card: Globo -->
+          <div class="card-reveal group">
+            <div class="relative overflow-hidden bg-gray-900 rounded-lg border border-gray-800 hover:border-gray-600 transition-all duration-500 h-96">
+              <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
+              <div class="relative h-full flex flex-col justify-end p-8 space-y-4">
+                <div class="text-6xl mb-4">🎈</div>
+                <h3 class="text-3xl font-bold">Globo</h3>
+                <p class="text-gray-300 font-light leading-relaxed">
+                  Elévate sobre la ciudad. Contempla el amanecer desde las alturas 
+                  y siente cómo el mundo se hace pequeño bajo tus pies.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card: Cena -->
+          <div class="card-reveal group">
+            <div class="relative overflow-hidden bg-gray-900 rounded-lg border border-gray-800 hover:border-gray-600 transition-all duration-500 h-96">
+              <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
+              <div class="relative h-full flex flex-col justify-end p-8 space-y-4">
+                <div class="text-6xl mb-4">🍷</div>
+                <h3 class="text-3xl font-bold">Cena</h3>
+                <p class="text-gray-300 font-light leading-relaxed">
+                  Una experiencia gastronómica que despierta todos los sentidos. 
+                  Sabores que cuentan historias en cada bocado.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card: Spa -->
+          <div class="card-reveal group">
+            <div class="relative overflow-hidden bg-gray-900 rounded-lg border border-gray-800 hover:border-gray-600 transition-all duration-500 h-96">
+              <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
+              <div class="relative h-full flex flex-col justify-end p-8 space-y-4">
+                <div class="text-6xl mb-4">💆</div>
+                <h3 class="text-3xl font-bold">Spa</h3>
+                <p class="text-gray-300 font-light leading-relaxed">
+                  Reconecta con tu esencia. Un refugio de paz donde el tiempo 
+                  se detiene y el alma respira.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-2xl mx-auto text-center space-y-12 scroll-reveal">
+        <h2 class="text-4xl md:text-5xl font-bold leading-tight">
+          ¿Lista para encender<br />este capítulo?
+        </h2>
+        
+        <p class="text-xl text-gray-400 font-light leading-relaxed">
+          No dejes que este momento se apague. Agenda tu cita y comienza 
+          a escribir la historia que siempre soñaste vivir.
+        </p>
+        
+        <a
+          href="https://wa.me/5215512345678?text=Hola,%20me%20gustaría%20agendar%20una%20cita%20para%20vivir%20el%20Capítulo%20CDMX"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block px-12 py-4 bg-white text-black font-bold text-lg tracking-wider hover:bg-gray-200 transition-all duration-300 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105"
+        >
+          AGENDAR CITA
+        </a>
+
+        <p class="text-sm text-gray-600 mt-8">
+          Te contactaremos vía WhatsApp
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  // Intersection Observer for scroll animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  // Observe all scroll-reveal elements
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollElements = document.querySelectorAll('.scroll-reveal, .card-reveal');
+    scrollElements.forEach((el) => observer.observe(el));
+  });
+</script>
+
+<style>
+  /* Scroll reveal animations */
+  .scroll-reveal,
+  .card-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-reveal.visible,
+  .card-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger card animations */
+  .card-reveal:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+
+  .card-reveal:nth-child(2) {
+    transition-delay: 0.3s;
+  }
+
+  .card-reveal:nth-child(3) {
+    transition-delay: 0.5s;
+  }
+
+  /* Card hover effects */
+  .group:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Smooth transitions for interactive elements */
+  .card-reveal,
+  .scroll-reveal,
+  a,
+  button {
+    transition-property: transform, opacity, border-color, background-color;
+  }
+</style>
