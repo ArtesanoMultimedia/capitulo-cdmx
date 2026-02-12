@@ -171,8 +171,11 @@ import Layout from '../layouts/Layout.astro';
     transform: translateY(-8px);
   }
 
-  /* Smooth transitions */
-  * {
+  /* Smooth transitions for interactive elements */
+  .card-reveal,
+  .scroll-reveal,
+  a,
+  button {
     transition-property: transform, opacity, border-color, background-color;
   }
 </style>
