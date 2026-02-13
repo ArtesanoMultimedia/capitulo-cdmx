@@ -2,87 +2,108 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Capítulo CDMX">
-  <main class="min-h-screen flex items-center justify-center bg-black">
-    <div class="text-center space-y-8 px-4" transition:animate="fade">
-      <h1 class="text-2xl md:text-3xl font-light tracking-wider text-gray-400 mb-12">
-        CAPÍTULO CDMX
-      </h1>
-      
-      <div class="max-w-md mx-auto">
-        <form id="secretForm" class="space-y-6">
-          <div>
+<Layout title="Alquimia | Protocolo Incendio">
+  <main class="min-h-screen flex flex-col items-center justify-center bg-[#000000] relative overflow-hidden font-playfair transition-opacity duration-2000" id="main-container">
+    
+    <div id="ui-wrapper" class="relative z-20 w-full max-w-sm px-8 transition-all duration-[3000ms]">
+      <form id="unlockForm" class="space-y-12 group">
+        
+        <div class="relative text-center flex flex-col items-center gap-6">
+          <label for="secretCode" class="text-cream/60 text-[10px] tracking-[0.4em] uppercase font-medium">
+            CÓDIGO DE REGALO
+          </label>
+          
+          <div class="relative w-full">
             <input
               type="text"
               id="secretCode"
-              placeholder="código secreto"
-              class="w-full bg-transparent border-b border-gray-700 text-white text-center text-xl py-3 px-4 focus:outline-none focus:border-white transition-colors duration-300 placeholder-gray-600"
+              placeholder="XXX-XXXX-XXXXXX"
+              class="w-full bg-transparent border-none text-cream text-center text-xl md:text-2xl py-4 px-2 focus:outline-none placeholder:text-cream/50 tracking-[0.15em] font-light uppercase transition-all duration-500"
               autocomplete="off"
+              maxlength="15"
             />
+            <div id="line" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-cream/30 transition-all duration-[1500ms] group-focus-within:w-full group-focus-within:bg-gold-old"></div>
           </div>
-          
-          <p id="errorMessage" class="text-red-500 text-sm opacity-0 transition-opacity duration-300">
-            Código incorrecto
+        </div>
+        
+        <div class="h-4 text-center">
+          <p id="errorMessage" class="text-gold-old/80 text-[10px] tracking-[0.3em] opacity-0 transition-opacity duration-[1000ms] italic">
+            Código no encontrado
           </p>
-          
-          <button
-            type="submit"
-            class="mt-8 px-8 py-3 border border-gray-700 text-gray-400 hover:text-white hover:border-white transition-all duration-300 tracking-wider text-sm"
-          >
-            ENTRAR
-          </button>
-        </form>
-      </div>
-
-      <p class="text-gray-600 text-sm mt-12">
-        Ingresa el código para continuar
-      </p>
+        </div>
+      </form>
     </div>
   </main>
 </Layout>
 
 <script>
-  const form = document.getElementById('secretForm') as HTMLFormElement;
+  // ==========================================
+  // ⚙️ CONFIGURACIÓN
+  // ==========================================
+  const SECRET_CODE = 'NHI-CDMX-050326'; 
+  // ==========================================
+
+  const form = document.getElementById('unlockForm') as HTMLFormElement;
   const input = document.getElementById('secretCode') as HTMLInputElement;
   const errorMessage = document.getElementById('errorMessage') as HTMLParagraphElement;
+  const wrapper = document.getElementById('ui-wrapper');
+  const main = document.getElementById('main-container');
   
-  // Secret code - you can change this
-  const SECRET_CODE = 'incendio';
-  
+  // 1. Lógica de Máscara Inteligente
+  input?.addEventListener('input', (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const inputType = (e as InputEvent).inputType;
+    
+    // Si el usuario está borrando, no forzamos el formato
+    if (inputType === 'deleteContentBackward') return;
+
+    // 1. Limpiar
+    let raw = target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    
+    // 2. Construir máscara
+    let formatted = '';
+    if (raw.length > 0) {
+      formatted = raw.slice(0, 3);
+    }
+    if (raw.length >= 3) {
+      formatted += '-' + raw.slice(3, 7);
+    }
+    if (raw.length >= 7) {
+      formatted += '-' + raw.slice(7, 13);
+    }
+
+    target.value = formatted;
+  });
+
+  // 2. Validación
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
+    const code = input.value.trim();
     
-    const code = input.value.trim().toLowerCase();
-    
-    if (code === SECRET_CODE) {
-      // Navigate to /historia with transition
-      window.location.href = '/historia';
+    if (code === SECRET_CODE || code === 'INCENDIO') {
+      wrapper?.classList.add('opacity-0', 'scale-95', 'blur-sm');
+      setTimeout(() => {
+        main?.classList.add('opacity-0');
+        setTimeout(() => {
+          window.location.href = '/historia';
+        }, 1000); 
+      }, 1000); 
+
     } else {
-      // Show error
       errorMessage.classList.remove('opacity-0');
-      input.classList.add('border-red-500');
-      
+      form.animate([
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-5px)' },
+        { transform: 'translateX(5px)' },
+        { transform: 'translateX(0)' }
+      ], { duration: 300 });
+
       setTimeout(() => {
         errorMessage.classList.add('opacity-0');
-        input.classList.remove('border-red-500');
+        input.value = '';
       }, 2000);
     }
   });
+
+  window.addEventListener('click', () => input?.focus());
 </script>
-
-<style>
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  main > div {
-    animation: fadeIn 1s ease-out;
-  }
-</style>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  className?: string;
+}
+
+const { title, description, icon, className } = Astro.props;
+---
+
+<div class:list={["group p-8 border border-gold-200/10 bg-wine-950/40 backdrop-blur-sm hover:border-gold-200/30 transition-all duration-1000 relative overflow-hidden font-cormorant", className]}>
+  <div class="absolute -right-6 -top-6 text-7xl opacity-[0.03] group-hover:scale-125 group-hover:opacity-[0.08] transition-all duration-1000 filter sepia">
+    {icon}
+  </div>
+  
+  <div class="relative z-10 space-y-6">
+    <div class="text-3xl filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000">
+      {icon}
+    </div>
+    <div class="space-y-3">
+      <h3 class="text-xl font-playfair font-medium text-gold-200/90 tracking-wide">{title}</h3>
+      <p class="text-sm text-gold-200/40 leading-relaxed font-light italic">
+        {description}
+      </p>
+    </div>
+  </div>
+  
+  <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-200/20 to-transparent translate-x-full group-hover:translate-x-0 transition-transform duration-[2000ms] ease-out"></div>
+</div>

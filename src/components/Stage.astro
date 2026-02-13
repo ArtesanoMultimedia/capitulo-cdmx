@@ -1,0 +1,36 @@
+---
+---
+<div id="stage" class="absolute inset-0 z-0 bg-coal overflow-hidden pointer-events-none">
+  <!-- Suble Grain Overlay -->
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-10"></div>
+  
+  <div class="gooey-container relative w-full h-full filter-[url(#goo)]">
+    <!-- Orb A (Tú) -->
+    <div 
+      id="orb-a" 
+      class="absolute w-32 h-32 md:w-48 md:h-48 rounded-full bg-cream blur-xl opacity-80"
+      style="left: 40%; top: 50%; transform: translate(-50%, -50%);"
+    ></div>
+    
+    <!-- Orb B (Ella) -->
+    <div 
+      id="orb-b" 
+      class="absolute w-32 h-32 md:w-48 md:h-48 rounded-full bg-gold-old blur-xl opacity-80"
+      style="left: 60%; top: 50%; transform: translate(-50%, -50%);"
+    ></div>
+
+    <!-- Central Ember Particles (Optional/Extra) -->
+    <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+  </div>
+</div>
+
+<style>
+  .gooey-container {
+    filter: url('#goo');
+  }
+  
+  #orb-a, #orb-b {
+    mix-blend-mode: screen;
+    will-change: transform, left, top, opacity;
+  }
+</style>

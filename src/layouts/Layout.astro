@@ -16,12 +16,12 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="bg-black text-white font-serif">
+  <body class="bg-coal text-cream antialiased font-playfair selection:bg-gold-old/20 selection:text-gold-old">
     <slot />
   </body>
 </html>
@@ -33,11 +33,21 @@ const { title } = Astro.props;
     box-sizing: border-box;
   }
 
+  :root {
+    --coal: #050505;
+    --cream: #F5F1E6;
+    --gold-old: #D4AF37;
+  }
+
   html {
     scroll-behavior: smooth;
+    background-color: var(--coal);
+    color: var(--cream);
   }
 
   body {
     overflow-x: hidden;
+    background-color: var(--coal);
+    color: var(--cream);
   }
 </style>
