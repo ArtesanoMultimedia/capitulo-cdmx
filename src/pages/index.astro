@@ -2,9 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Alquimia | Protocolo Incendio">
+<Layout title="Capítulo: CDMX">
   <main class="min-h-screen flex flex-col items-center justify-center bg-[#000000] relative overflow-hidden font-playfair transition-opacity duration-2000" id="main-container">
     
+    <!-- PHASE 1: UNLOCK -->
     <div id="ui-wrapper" class="relative z-20 w-full max-w-sm px-8 transition-all duration-[3000ms]">
       <form id="unlockForm" class="space-y-12 group flex flex-col items-center">
         
@@ -41,29 +42,164 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </form>
     </div>
+
+    <!-- PHASE 2: STORY (Hidden initially) -->
+    <div id="story-wrapper" class="hidden absolute inset-0 z-30 h-full w-full bg-[#050505] overflow-hidden selection:bg-gold-old/20 cursor-crosshair opacity-0 transition-opacity duration-[2000ms]">
+      
+      <div id="debug-controls" class="hidden absolute top-4 right-4 z-[100] flex flex-col items-end pointer-events-auto">
+        <div class="flex gap-2 mb-2">
+          <button id="btn-record-timestamp" class="bg-red-900/80 text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest border border-red-500/50 hover:bg-red-700 shadow-lg backdrop-blur-md transition-colors">
+            🔴 REC
+          </button>
+        </div>
+        <div class="bg-black/50 backdrop-blur-md border border-gold-old/20 rounded p-4 text-right">
+          <div id="live-timer" class="text-4xl text-gold-old font-mono font-bold tabular-nums tracking-tighter leading-none">0.00</div>
+          <div id="last-timestamp" class="text-[10px] text-cream/50 mt-1 font-mono">Último REC: 0.00s</div>
+        </div>
+      </div>
+
+      <button 
+        id="playback-control" 
+        class="fixed bottom-8 right-8 z-[100] text-gold-old/50 hover:text-gold-old transition-all duration-500 opacity-0 pointer-events-none hover:scale-110 focus:outline-none"
+        aria-label="Pausar o reanudar"
+      >
+        <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+        <svg id="icon-play" class="hidden" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      </button>
+
+      <div id="orb-container" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 scale-50 transition-all duration-[5000ms] ease-out will-change-transform">
+        <div id="orb" class="w-24 h-24 rounded-full bg-radial-gradient from-gold-old to-transparent blur-xl opacity-30 transition-transform duration-100 ease-out will-change-transform"></div>
+      </div>
+
+      <div id="ui-layer" class="relative z-50 h-full w-full flex flex-col items-center justify-center text-center">
+        <div id="sequence-container" class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 z-50 px-6">
+          <h2 id="seq-text" class="text-cream/80 text-xl md:text-2xl tracking-[0.1em] italic font-light leading-relaxed min-h-[80px] max-w-2xl transition-opacity duration-1000 text-balance"></h2>
+          
+          <div id="seq-btn-container" class="mt-12 h-16 flex items-center justify-center z-50">
+            <button id="seq-btn" class="opacity-0 pointer-events-none px-8 py-3 text-gold-old border border-gold-old/30 bg-gold-old/5 hover:bg-gold-old/10 hover:border-gold-old/60 hover:scale-105 rounded-sm transition-all duration-500 text-[11px] tracking-[0.3em] uppercase outline-none shadow-[0_0_15px_rgba(212,175,55,0.05)]">
+            </button>
+          </div>
+        </div>
+
+        <div id="lyrics-container" class="absolute inset-0 flex items-center justify-center pointer-events-none z-30 px-8">
+          <p id="lyrics-text" class="text-cream/90 text-2xl md:text-4xl tracking-[0.1em] md:tracking-[0.2em] italic font-light opacity-0 transform scale-95 transition-all duration-[3000ms] ease-out text-balance text-center leading-snug absolute"></p>
+          <img id="lyrics-image" src="" alt="Moment" class="w-64 md:w-80 h-auto rounded shadow-2xl opacity-0 transform scale-95 transition-all duration-[3000ms] ease-out border border-gold-old/20 absolute object-cover" />
+        </div>
+
+        <div id="phase-final" class="hidden absolute inset-0 flex flex-col items-center justify-center space-y-16 opacity-0 transition-opacity duration-[5000ms] z-40 px-6">
+          <h2 class="text-3xl md:text-5xl font-light tracking-[0.2em] text-cream italic animate-fade-in-up text-balance text-center">¿Conspiramos?</h2>
+          <a id="cta-whatsapp" href="https://wa.me/34665966050?text=He%20escuchado%20la%20historia.%20Estoy%20lista%20para%20conspirar." target="_blank" class="pointer-events-auto px-12 py-5 border border-gold-old/40 text-gold-old bg-gold-old/5 hover:bg-gold-old/10 hover:border-gold-old hover:scale-105 transition-all duration-700 text-[11px] tracking-[0.4em] uppercase italic relative group shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+            <span class="relative z-10">Fijar fecha</span>
+          </a>
+        </div>
+      </div>
+
+      <audio id="narracion" src="/CapituloCDMX.mp3" preload="auto"></audio>
+    </div>
   </main>
 </Layout>
+
+<style>
+  .bg-radial-gradient { background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to)); }
+  
+  /* Animación de caracteres */
+  :global(.char-reveal) { opacity: 0; display: inline-block; filter: blur(4px); transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease; transform: translateY(5px); }
+  :global(.char-visible) { opacity: 1; filter: blur(0); transform: translateY(0); }
+  
+  /* Contenedor de palabra indivisible */
+  :global(.word-wrapper) {
+    display: inline-block;
+    white-space: nowrap; 
+  }
+</style>
 
 <script>
   // ==========================================
   // ⚙️ CONFIGURACIÓN
   // ==========================================
   const SECRET_CODE = 'NHI-CDMX-050326'; 
-  // ==========================================
+  const DEBUG_MODE = false; 
+  const LOOP_START = 296; 
+  const LOOP_END = 346;   
+  const NARRATION_START_TIME = 24; 
+  const SHOW_CTA_AT = 263.96; 
+  
+  const PREP_SEQUENCE = [
+    { text: "Hola amor, te estaba esperando...", type: 'auto', duration: 4000 },
+    { text: "Antes de empezar, necesito que te prepares.", type: 'auto', duration: 4000 },
+    { text: "Ponte los auriculares para escucharme.", type: 'manual', btn: "Los tengo" },
+    { text: "Sube el volumen.", type: 'manual', btn: "Ya oigo la música" },
+    { text: "Busca un lugar tranquilo e íntimo...<br>y ponte cómoda. Te espero.", type: 'manual', btn: "Estoy lista" }
+  ];
 
+  const LYRICS = [
+    { time: 32.13, text: "Ya falta poco" },
+    { time: 41.02, text: "Rebeldía" },
+    { time: 53.22, text: "Contra el tiempo y la distancia" },
+    { time: 60.54, text: "Piel con piel" },
+    { time: 65.6, text: "Todo." },
+    { time: 70.14, text: "Nuevo capítulo" },
+    { time: 75.33, text: "Imagina..." },
+    { time: 79.89, text: "Perdernos para encontrarnos" },
+    { time: 88.9, image: "/assets/escape.jpg" },
+    { time: 102.02, text: "San Valentín a nuestro aire" },
+    { time: 106.17, image: "/assets/cena.webp" },
+    { time: 112.67, text: "Apagar las pantallas" },
+    { time: 124.69, image: "/assets/ceramica.jpg" },
+    { time: 142.49, text: "Parar el reloj" },
+    { time: 146.71, image: "/assets/masaje.jpg" },
+    { time: 157.74, text: "Todo contigo" },
+    { time: 159.41, text: "Todo." },
+    { time: 165.23, text: "Siempre contigo" },
+    { time: 170.38, text: "Siempre." },
+    { time: 176.44, text: "No todo lo dejo abierto..." },
+    { time: 181.12, text: "ESCENA 1: Presentación" },
+    { time: 191.29, text: "Brindis" },
+    { time: 198.43, text: "Memoria" },
+    { time: 203.69, text: "Sorpresa final" },
+    { time: 215.53, text: "Posibilidades" },
+    { time: 223.17, text: "Decidir juntos" },
+    { time: 227.92, text: "Imaginar contigo" },
+    { time: 231.7, text: "Construir contigo" },
+    { time: 237.5, text: "Escribir contigo." },
+    { time: 256.54, text: "Te amo..." }
+  ];
+
+  // --- ELEMENTS ---
   const form = document.getElementById('unlockForm') as HTMLFormElement;
   const input = document.getElementById('secretCode') as HTMLInputElement;
   const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
   const errorMessage = document.getElementById('errorMessage') as HTMLParagraphElement;
   const wrapper = document.getElementById('ui-wrapper');
   const main = document.getElementById('main-container');
+  const storyWrapper = document.getElementById('story-wrapper');
+
+  const audio = document.getElementById('narracion') as HTMLAudioElement;
+  const orb = document.getElementById('orb');
+  const orbContainer = document.getElementById('orb-container');
+  const seqContainer = document.getElementById('sequence-container');
+  const seqText = document.getElementById('seq-text');
+  const seqBtn = document.getElementById('seq-btn');
+  const lyricsEl = document.getElementById('lyrics-text');
+  const imageEl = document.getElementById('lyrics-image') as HTMLImageElement; 
+  const phaseFinal = document.getElementById('phase-final');
   
-  // 1. Lógica de Máscara Inteligente y Visibilidad del Botón
+  const playbackControl = document.getElementById('playback-control');
+  const iconPlay = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+  const liveTimer = document.getElementById('live-timer');
+
+  let audioCtx: AudioContext;
+  let analyser: AnalyserNode;
+  let dataArray: Uint8Array;
+  let isCoreExperience = false;
+  let lastLyricIndex = -1;
+
+  // --- MÁSCARA Y VISIBILIDAD DE BOTÓN (Phase 1) ---
   input?.addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
     const inputType = (e as InputEvent).inputType;
     
-    // Si hay texto, mostramos el botón
     if (target.value.length > 0) {
         submitBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
     } else {
@@ -82,19 +218,42 @@ import Layout from '../layouts/Layout.astro';
     target.value = formatted;
   });
 
-  // 2. Validación
+  // --- VALIDACIÓN Y TRANSICIÓN (Phase 1 to 2) ---
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const code = input.value.trim();
     
     if (code === SECRET_CODE || code === 'INCENDIO') {
+      // 1. INICIAR AUDIO INMEDIATAMENTE (Gesto de Usuario!)
+      audio.volume = 0;
+      audio.currentTime = LOOP_START;
+      audio.play().then(() => {
+          // Fade in logarítmico inicial
+          let startT = performance.now();
+          const dur = 4000;
+          function step(cur: number) {
+              const prog = Math.min((cur - startT) / dur, 1);
+              audio.volume = Math.pow(prog, 2);
+              if(prog < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          
+          // Iniciar secuencia de preparación
+          setTimeout(() => { playSequenceStep(0); }, 1000);
+      }).catch(err => console.error("Audio block:", err));
+
+      // 2. Transición Visual
       wrapper?.classList.add('opacity-0', 'scale-95', 'blur-sm');
       setTimeout(() => {
-        main?.classList.add('opacity-0');
-        setTimeout(() => {
-          window.location.href = '/historia';
-        }, 1000); 
+        wrapper?.remove();
+        storyWrapper?.classList.remove('hidden');
+        void storyWrapper?.offsetWidth;
+        storyWrapper?.classList.add('opacity-100');
+        
+        // Enfocar para futuros eventos si es necesario
+        window.focus();
       }, 1000); 
+
     } else {
       errorMessage.classList.remove('opacity-0');
       form.animate([
@@ -107,11 +266,201 @@ import Layout from '../layouts/Layout.astro';
       setTimeout(() => {
         errorMessage.classList.add('opacity-0');
         input.value = '';
-        // Ocultar botón al limpiar
         submitBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
       }, 2000);
     }
   });
 
-  window.addEventListener('click', () => input?.focus());
+  // --- LÓGICA DE LA HISTORIA (Phase 2) ---
+
+  function initAudioContext() {
+    if (audioCtx) return;
+    const AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
+    audioCtx = new AudioContext();
+    analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.smoothingTimeConstant = 0.88; 
+    analyser.fftSize = 256;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    visualize();
+  }
+
+  function visualize() {
+    requestAnimationFrame(visualize);
+    if (!analyser || audio.paused) return;
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    for(let i = 0; i < 40; i++) { sum += dataArray[i]; }
+    const average = sum / 40;
+    const scale = 1 + (average / 256) * 0.8;
+    const opacity = 0.3 + (average / 256) * 0.6;
+    const blur = 20 + (average / 256) * 30;
+    if (orb) {
+      orb.style.transform = `scale(${scale})`;
+      orb.style.opacity = opacity.toString();
+      orb.style.filter = `blur(${blur}px)`;
+      orb.style.boxShadow = `0 0 ${average * 2}px rgba(212, 175, 55, ${opacity * 0.4})`;
+    }
+  }
+
+  function fadeVolume(targetVol: number, duration: number, onComplete?: () => void) {
+    const startVol = audio.volume;
+    const startTime = performance.now();
+    function step(currentTime: number) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const newVol = startVol + (targetVol - startVol) * progress;
+      audio.volume = Math.max(0, Math.min(1, newVol));
+      if (progress < 1) { requestAnimationFrame(step); } else { if (onComplete) onComplete(); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function typeText(element: HTMLElement, htmlContent: string, speed: number = 50) { 
+     return new Promise<void>((resolve) => {
+      element.innerHTML = "";
+      element.style.opacity = '1';
+      
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = htmlContent;
+      const nodes = Array.from(tempDiv.childNodes);
+      let charIndex = 0;
+      let totalChars = 0;
+
+      nodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+           const text = node.textContent || "";
+           const words = text.split(' ');
+           words.forEach((wordText, i) => {
+              const wordWrapper = document.createElement('span');
+              wordWrapper.className = 'word-wrapper';
+              const chars = wordText.split('');
+              chars.forEach(char => {
+                  const span = document.createElement('span');
+                  span.textContent = char;
+                  span.className = 'char-reveal';
+                  span.style.transitionDelay = `${charIndex * speed}ms`;
+                  wordWrapper.appendChild(span);
+                  charIndex++;
+              });
+              element.appendChild(wordWrapper);
+              totalChars += chars.length;
+              if (i < words.length - 1) {
+                  element.appendChild(document.createTextNode(' '));
+              }
+           });
+        } else { 
+            element.appendChild(node.cloneNode(true)); 
+        }
+      });
+
+      void element.offsetWidth;
+      const chars = element.querySelectorAll('.char-reveal');
+      chars.forEach(c => c.classList.add('char-visible'));
+      setTimeout(resolve, (totalChars * speed) + 1000);
+    });
+  }
+
+  async function fadeOutText(element: HTMLElement) {
+     element.style.opacity = '0';
+     return new Promise(r => setTimeout(r, 1000));
+  }
+
+  async function playSequenceStep(index: number) {
+    if (index >= PREP_SEQUENCE.length) { startCoreExperience(); return; }
+    const step = PREP_SEQUENCE[index];
+    if (seqBtn) { seqBtn.style.opacity = '0'; seqBtn.style.pointerEvents = 'none'; seqBtn.innerText = ""; }
+    if (seqText) { if (index > 0) await fadeOutText(seqText); await new Promise(r => setTimeout(r, 300)); await typeText(seqText, step.text, 40); }
+    if (step.type === 'auto') { setTimeout(() => { playSequenceStep(index + 1); }, 2000); } 
+    else if (step.type === 'manual' && seqBtn && step.btn) {
+       setTimeout(() => { seqBtn.innerText = step.btn!; seqBtn.style.opacity = '1'; seqBtn.style.pointerEvents = 'auto'; }, 500);
+       const handler = (e: Event) => { e.stopPropagation(); e.preventDefault(); seqBtn.removeEventListener('click', handler); playSequenceStep(index + 1); };
+       seqBtn.addEventListener('click', handler);
+    }
+  }
+
+  function startCoreExperience() {
+     if (seqContainer) { seqContainer.style.opacity = '0'; seqContainer.style.pointerEvents = 'none'; setTimeout(() => seqContainer.remove(), 2000); }
+     initAudioContext();
+     
+     fadeVolume(0, 2500, () => {
+        isCoreExperience = true;
+        audio.currentTime = NARRATION_START_TIME; 
+        audio.play();
+        if (orbContainer) orbContainer.classList.remove('opacity-0', 'scale-50');
+        if (playbackControl) {
+            playbackControl.classList.remove('opacity-0', 'pointer-events-none');
+            playbackControl.classList.add('opacity-100', 'pointer-events-auto');
+        }
+        fadeVolume(1, 3500);
+     });
+  }
+
+  audio.addEventListener('timeupdate', () => {
+    if (!isCoreExperience) { if (audio.currentTime >= LOOP_END) audio.currentTime = LOOP_START; return; }
+    
+    const currentTime = audio.currentTime;
+    if (DEBUG_MODE && liveTimer) { liveTimer.innerText = currentTime.toFixed(2); }
+
+    const currentLyricIndex = LYRICS.findIndex((l, i) => { const nextL = LYRICS[i + 1]; return currentTime >= l.time && (!nextL || currentTime < nextL.time); });
+
+    if (currentLyricIndex !== -1 && currentLyricIndex !== lastLyricIndex) {
+      const lyricData = LYRICS[currentLyricIndex];
+      if (Math.abs(currentTime - lyricData.time) < 2) { 
+          updateContent(lyricData);
+          lastLyricIndex = currentLyricIndex;
+      }
+    }
+
+    if (currentTime > SHOW_CTA_AT && phaseFinal && phaseFinal.classList.contains('hidden')) {
+       phaseFinal.classList.remove('hidden'); void phaseFinal.offsetWidth; phaseFinal.classList.remove('opacity-0', 'pointer-events-none'); phaseFinal.classList.add('opacity-100', 'pointer-events-auto');
+       if(lyricsEl) lyricsEl.style.opacity = '0';
+       if(imageEl) imageEl.style.opacity = '0';
+       if(playbackControl) playbackControl.style.opacity = '0';
+    }
+  });
+
+  function updateContent(data: {text?: string, image?: string}) {
+    if (lyricsEl) { lyricsEl.style.opacity = '0'; lyricsEl.style.transform = 'scale(0.95)'; }
+    if (imageEl) { imageEl.style.opacity = '0'; imageEl.style.transform = 'scale(0.95)'; }
+
+    setTimeout(() => {
+      if (data.image && imageEl) {
+          imageEl.src = data.image;
+          imageEl.style.opacity = '1';
+          imageEl.style.transform = 'scale(1)';
+      } else if (data.text && lyricsEl) {
+          typeText(lyricsEl, data.text, 0).then(() => { 
+              lyricsEl.style.opacity = '1';
+              lyricsEl.style.transform = 'scale(1)';
+          });
+      }
+      setTimeout(() => {
+         if (data.text && lyricsEl) { lyricsEl.style.opacity = '0'; }
+         if (data.image && imageEl && imageEl.src.includes(data.image)) { imageEl.style.opacity = '0'; }
+      }, 5000);
+    }, 1000);
+  }
+
+  // Playback Control
+  playbackControl?.addEventListener('click', (e) => {
+    e.stopPropagation(); 
+    if (audio.paused) {
+      audio.play();
+      iconPlay?.classList.add('hidden');
+      iconPause?.classList.remove('hidden');
+    } else {
+      audio.pause();
+      iconPause?.classList.add('hidden');
+      iconPlay?.classList.remove('hidden');
+    }
+  });
+
+  // Focus utility
+  window.addEventListener('click', () => {
+    if (storyWrapper && !storyWrapper.classList.contains('hidden')) return;
+    input?.focus();
+  });
 </script>
