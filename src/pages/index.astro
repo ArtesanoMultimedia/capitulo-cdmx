@@ -6,9 +6,9 @@ import Layout from '../layouts/Layout.astro';
   <main class="min-h-screen flex flex-col items-center justify-center bg-[#000000] relative overflow-hidden font-playfair transition-opacity duration-2000" id="main-container">
     
     <div id="ui-wrapper" class="relative z-20 w-full max-w-sm px-8 transition-all duration-[3000ms]">
-      <form id="unlockForm" class="space-y-12 group">
+      <form id="unlockForm" class="space-y-12 group flex flex-col items-center">
         
-        <div class="relative text-center flex flex-col items-center gap-6">
+        <div class="relative text-center flex flex-col items-center gap-6 w-full">
           <label for="secretCode" class="text-cream/60 text-[10px] tracking-[0.4em] uppercase font-medium">
             CÓDIGO DE REGALO
           </label>
@@ -25,6 +25,14 @@ import Layout from '../layouts/Layout.astro';
             <div id="line" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-cream/30 transition-all duration-[1500ms] group-focus-within:w-full group-focus-within:bg-gold-old"></div>
           </div>
         </div>
+
+        <button 
+          id="submitBtn"
+          type="submit"
+          class="opacity-0 pointer-events-none translate-y-4 px-8 py-3 border border-gold-old/30 text-gold-old text-[10px] tracking-[0.3em] uppercase hover:bg-gold-old/10 hover:border-gold-old/60 transition-all duration-700 ease-out"
+        >
+          Canjear Regalo
+        </button>
         
         <div class="h-4 text-center">
           <p id="errorMessage" class="text-gold-old/80 text-[10px] tracking-[0.3em] opacity-0 transition-opacity duration-[1000ms] italic">
@@ -45,32 +53,31 @@ import Layout from '../layouts/Layout.astro';
 
   const form = document.getElementById('unlockForm') as HTMLFormElement;
   const input = document.getElementById('secretCode') as HTMLInputElement;
+  const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
   const errorMessage = document.getElementById('errorMessage') as HTMLParagraphElement;
   const wrapper = document.getElementById('ui-wrapper');
   const main = document.getElementById('main-container');
   
-  // 1. Lógica de Máscara Inteligente
+  // 1. Lógica de Máscara Inteligente y Visibilidad del Botón
   input?.addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
     const inputType = (e as InputEvent).inputType;
     
-    // Si el usuario está borrando, no forzamos el formato
+    // Si hay texto, mostramos el botón
+    if (target.value.length > 0) {
+        submitBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+    } else {
+        submitBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+    }
+
     if (inputType === 'deleteContentBackward') return;
 
-    // 1. Limpiar
     let raw = target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-    
-    // 2. Construir máscara
     let formatted = '';
-    if (raw.length > 0) {
-      formatted = raw.slice(0, 3);
-    }
-    if (raw.length >= 3) {
-      formatted += '-' + raw.slice(3, 7);
-    }
-    if (raw.length >= 7) {
-      formatted += '-' + raw.slice(7, 13);
-    }
+    
+    if (raw.length > 0) formatted = raw.slice(0, 3);
+    if (raw.length >= 3) formatted += '-' + raw.slice(3, 7);
+    if (raw.length >= 7) formatted += '-' + raw.slice(7, 13);
 
     target.value = formatted;
   });
@@ -88,7 +95,6 @@ import Layout from '../layouts/Layout.astro';
           window.location.href = '/historia';
         }, 1000); 
       }, 1000); 
-
     } else {
       errorMessage.classList.remove('opacity-0');
       form.animate([
@@ -101,6 +107,8 @@ import Layout from '../layouts/Layout.astro';
       setTimeout(() => {
         errorMessage.classList.add('opacity-0');
         input.value = '';
+        // Ocultar botón al limpiar
+        submitBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
       }, 2000);
     }
   });
