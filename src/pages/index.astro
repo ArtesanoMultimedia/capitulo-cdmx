@@ -43,20 +43,24 @@ import Layout from '../layouts/Layout.astro';
       </form>
     </div>
 
+    <!-- DEBUG CONTROLS (Always visible when DEBUG_MODE = true) -->
+    <div id="debug-controls" class="hidden fixed top-4 right-4 z-[200] flex flex-col items-end pointer-events-auto gap-2">
+      <button id="btn-skip-to-story" class="bg-blue-900/80 text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest border border-blue-500/50 hover:bg-blue-700 shadow-lg backdrop-blur-md transition-colors">
+        ⏭️ Omitir hasta "Estoy lista"
+      </button>
+      <div class="flex gap-2">
+        <button id="btn-record-timestamp" class="bg-red-900/80 text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest border border-red-500/50 hover:bg-red-700 shadow-lg backdrop-blur-md transition-colors">
+          🔴 REC
+        </button>
+      </div>
+      <div class="bg-black/50 backdrop-blur-md border border-gold-old/20 rounded p-4 text-right">
+        <div id="live-timer" class="text-4xl text-gold-old font-mono font-bold tabular-nums tracking-tighter leading-none">0.00</div>
+        <div id="last-timestamp" class="text-[10px] text-cream/50 mt-1 font-mono">Último REC: 0.00s</div>
+      </div>
+    </div>
+
     <!-- PHASE 2: STORY (Hidden initially) -->
     <div id="story-wrapper" class="hidden absolute inset-0 z-30 h-full w-full bg-[#050505] overflow-hidden selection:bg-gold-old/20 cursor-crosshair opacity-0 transition-opacity duration-[2000ms]">
-      
-      <div id="debug-controls" class="hidden absolute top-4 right-4 z-[100] flex flex-col items-end pointer-events-auto">
-        <div class="flex gap-2 mb-2">
-          <button id="btn-record-timestamp" class="bg-red-900/80 text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest border border-red-500/50 hover:bg-red-700 shadow-lg backdrop-blur-md transition-colors">
-            🔴 REC
-          </button>
-        </div>
-        <div class="bg-black/50 backdrop-blur-md border border-gold-old/20 rounded p-4 text-right">
-          <div id="live-timer" class="text-4xl text-gold-old font-mono font-bold tabular-nums tracking-tighter leading-none">0.00</div>
-          <div id="last-timestamp" class="text-[10px] text-cream/50 mt-1 font-mono">Último REC: 0.00s</div>
-        </div>
-      </div>
 
       <button 
         id="playback-control" 
@@ -122,7 +126,7 @@ import Layout from '../layouts/Layout.astro';
   const LOOP_START = 296; 
   const LOOP_END = 346;   
   const NARRATION_START_TIME = 24; 
-  const SHOW_CTA_AT = 263.96; 
+  const SHOW_CTA_AT = 244.42; // Tiempo ajustado manualmente
   
   const PREP_SEQUENCE = [
     { text: "Hola amor, te estaba esperando...", type: 'auto', duration: 4000 },
@@ -133,36 +137,36 @@ import Layout from '../layouts/Layout.astro';
   ];
 
   const LYRICS = [
-    { time: 32.13, text: "Ya falta poco" },
-    { time: 41.02, text: "Rebeldía" },
-    { time: 53.22, text: "Contra el tiempo y la distancia" },
-    { time: 60.54, text: "Piel con piel" },
-    { time: 65.6, text: "Todo." },
-    { time: 70.14, text: "Nuevo capítulo" },
-    { time: 75.33, text: "Imagina..." },
-    { time: 79.89, text: "Perdernos para encontrarnos" },
-    { time: 88.9, image: "/assets/escape.jpg" },
-    { time: 102.02, text: "San Valentín a nuestro aire" },
-    { time: 106.17, image: "/assets/cena.webp" },
-    { time: 112.67, text: "Apagar las pantallas" },
-    { time: 124.69, image: "/assets/ceramica.jpg" },
-    { time: 142.49, text: "Parar el reloj" },
-    { time: 146.71, image: "/assets/masaje.jpg" },
-    { time: 157.74, text: "Todo contigo" },
-    { time: 159.41, text: "Todo." },
-    { time: 165.23, text: "Siempre contigo" },
-    { time: 170.38, text: "Siempre." },
-    { time: 176.44, text: "No todo lo dejo abierto..." },
-    { time: 181.12, text: "ESCENA 1: Presentación" },
-    { time: 191.29, text: "Brindis" },
-    { time: 198.43, text: "Memoria" },
-    { time: 203.69, text: "Sorpresa final" },
-    { time: 215.53, text: "Posibilidades" },
-    { time: 223.17, text: "Decidir juntos" },
-    { time: 227.92, text: "Imaginar contigo" },
-    { time: 231.7, text: "Construir contigo" },
-    { time: 237.5, text: "Escribir contigo." },
-    { time: 256.54, text: "Te amo..." }
+    { time: 16.87, text: "Ya falta poco" },
+    { time: 27.1, text: "Rebeldía" },
+    { time: 38.21, text: "Contra el tiempo y la distancia" },
+    { time: 45.6, text: "Piel con piel" },
+    { time: 50.49, text: "Todo." },
+    { time: 54.99, text: "Nuevo capítulo" },
+    { time: 61.57, text: "Imagina..." },
+    { time: 66.21, text: "Perdernos para encontrarnos" },
+    { time: 74.17, image: "/assets/escape.jpg" },
+    { time: 86.95, text: "San Valentín a nuestro aire" },
+    { time: 90.85, image: "/assets/cena.webp" },
+    { time: 99.67, text: "Apagar las pantallas" },
+    { time: 109.71, image: "/assets/ceramica.jpg" },
+    { time: 127.96, text: "Parar el reloj" },
+    { time: 132.36, image: "/assets/masaje.jpg" },
+    { time: 142.09, text: "Todo contigo" },
+    { time: 144.26, text: "Todo." },
+    { time: 149.57, text: "Siempre contigo" },
+    { time: 155.5, text: "Siempre." },
+    { time: 160.57, text: "No todo lo dejo abierto..." },
+    { time: 167.49, text: "ESCENA 1: Presentación" },
+    { time: 178.12, text: "Brindis" },
+    { time: 185.18, text: "Memoria" },
+    { time: 191.18, text: "Sorpresa final" },
+    { time: 201.16, text: "Posibilidades" },
+    { time: 208.37, text: "Decidir juntos" },
+    { time: 213.57, text: "Imaginar contigo" },
+    { time: 216.73, text: "Construir contigo" },
+    { time: 221.41, text: "Escribir contigo." },
+    { time: 242.18, text: "Te amo..." }
   ];
 
   // --- ELEMENTS ---
@@ -194,6 +198,70 @@ import Layout from '../layouts/Layout.astro';
   let dataArray: Uint8Array;
   let isCoreExperience = false;
   let lastLyricIndex = -1;
+
+  // --- DEBUG SETUP ---
+  let recordedTimes: {time: number, text: string}[] = [];
+
+  if (DEBUG_MODE) {
+      const debugUI = document.getElementById('debug-controls');
+      const debugBtn = document.getElementById('btn-record-timestamp');
+      const debugLast = document.getElementById('last-timestamp');
+      const skipBtn = document.getElementById('btn-skip-to-story');
+      
+      if (debugUI) debugUI.classList.remove('hidden');
+
+      // Skip button - salta directamente a la experiencia principal
+      skipBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        // Simular que se introdujo el código correcto
+        if (wrapper && storyWrapper) {
+          wrapper.classList.add('opacity-0', 'scale-95', 'blur-sm');
+          setTimeout(() => {
+            wrapper.remove();
+            storyWrapper.classList.remove('hidden');
+            void storyWrapper.offsetWidth;
+            storyWrapper.classList.add('opacity-100');
+          }, 500);
+        }
+        
+        // Iniciar audio en loop
+        audio.volume = 0;
+        audio.currentTime = LOOP_START;
+        audio.play().then(() => {
+          let startT = performance.now();
+          const dur = 2000;
+          function step(cur: number) {
+            const prog = Math.min((cur - startT) / dur, 1);
+            audio.volume = Math.pow(prog, 2);
+            if(prog < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          
+          // Saltar directamente a la experiencia principal después de 1 segundo
+          setTimeout(() => {
+            startCoreExperience();
+          }, 1000);
+        });
+      });
+
+      const recordTime = () => {
+        const t = parseFloat(audio.currentTime.toFixed(2));
+        const nextIndex = recordedTimes.length; 
+        const placeholderText = nextIndex < LYRICS.length ? LYRICS[nextIndex].text || "IMAGEN" : "BOTÓN FINAL";
+        recordedTimes.push({ time: t, text: placeholderText });
+        if (debugLast) debugLast.innerText = `Último REC: ${t}s`;
+        console.clear();
+        console.log(JSON.stringify(recordedTimes, null, 2));
+        document.body.style.backgroundColor = '#220000';
+        setTimeout(() => document.body.style.backgroundColor = '#050505', 100);
+      };
+
+      debugBtn?.addEventListener('click', (e) => { e.stopPropagation(); recordTime(); });
+      document.addEventListener('keydown', (e) => { 
+        if (e.code === 'Space' && isCoreExperience) { e.preventDefault(); recordTime(); }
+      });
+  }
 
   // --- MÁSCARA Y VISIBILIDAD DE BOTÓN (Phase 1) ---
   input?.addEventListener('input', (e: Event) => {
@@ -387,8 +455,12 @@ import Layout from '../layouts/Layout.astro';
      
      fadeVolume(0, 2500, () => {
         isCoreExperience = true;
-        audio.currentTime = NARRATION_START_TIME; 
+        
+        // Cambiar a la narración final y empezar desde el principio
+        audio.src = '/narracion.mp3';
+        audio.currentTime = 0; 
         audio.play();
+        
         if (orbContainer) orbContainer.classList.remove('opacity-0', 'scale-50');
         if (playbackControl) {
             playbackControl.classList.remove('opacity-0', 'pointer-events-none');
